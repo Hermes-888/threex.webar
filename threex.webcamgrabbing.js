@@ -4,6 +4,7 @@ var THREEx = THREEx || {}
 navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia || navigator.mediaDevices.msGetUserMedia;
 window.URL = window.URL || window.webkitURL;
 
+
 /**
  * Grab camera
  * @constructor
@@ -13,13 +14,13 @@ THREEx.WebcamGrabbing = function() {
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Comments
 	//////////////////////////////////////////////////////////////////////////////////
-        // create video element
-        var domElement        = document.createElement('video')
-        domElement.setAttribute('autoplay', true)
+    // create video element
+    var domElement        = document.createElement('video')
+    domElement.setAttribute('autoplay', true)
 
 	// window.domElement = video
 	domElement.style.zIndex = -1;
-        domElement.style.position = 'absolute'
+    domElement.style.position = 'absolute'
 
 	// domElement.style.top = '50%'
 	// domElement.style.left = '50%'
@@ -31,7 +32,7 @@ THREEx.WebcamGrabbing = function() {
 	domElement.style.left = '0px'
 	domElement.style.width = '100%'
 	domElement.style.height = '100%'
-
+    
         /**
          * Resize video element.
          * - Made complex to handle the aspect change
@@ -72,39 +73,39 @@ THREEx.WebcamGrabbing = function() {
         })
 
         // just to be sure - resize on mobile is funky to say the least
-        setInterval(function(){
-                onResize()
-        }, 500)
+        setInterval(function() {
+            onResize();
+        }, 500);
 
         // get the media sources
         MediaStreamTrack.getSources(function(sourceInfos) {
-                // define getUserMedia() constraints
-                var constraints = {
-                        video: true,
-                        audio: false,
-                }
-                // to mirror the video element when it isnt 'environment'
-                // domElement.style.transform   = 'scaleX(-1)'
+            // define getUserMedia() constraints
+            var constraints = {
+                    video: true,
+                    audio: false,
+            }
+            // to mirror the video element when it isnt 'environment'
+            // domElement.style.transform   = 'scaleX(-1)'
 
-                // it it finds the videoSource 'environment', modify constraints.video
-                for (var i = 0; i != sourceInfos.length; ++i) {
-                        var sourceInfo = sourceInfos[i];
-                        if(sourceInfo.kind == "video" && sourceInfo.facing == "environment") {
-                                constraints.video = {
-                                        optional: [{sourceId: sourceInfo.id}]
-                                }
-                                // not to mirror the video element when it is 'environment'
-                                // domElement.style.transform   = ''
+            // it finds the videoSource 'environment', modify constraints.video
+            for (var i = 0; i != sourceInfos.length; ++i) {
+                var sourceInfo = sourceInfos[i];
+                if(sourceInfo.kind == "video" && sourceInfo.facing == "environment") {
+                        constraints.video = {
+                                optional: [{sourceId: sourceInfo.id}]
                         }
+                        // not to mirror the video element when it is 'environment'
+                        // domElement.style.transform   = ''
                 }
+            }
 
-                // try to get user media
-                navigator.mediaDevices.getUserMedia( constraints, function(stream){
-                        domElement.src = URL.createObjectURL(stream);
-                }, function(error) {
-                        console.error("Cant getUserMedia()! due to ", error);
-                });
+            // try to get user media
+            navigator.mediaDevices.getUserMedia( constraints, function(stream){
+                domElement.src = URL.createObjectURL(stream);
+            }, function(error) {
+                alert("Cant getUserMedia()! due to ", error);
+            });
         });
 
-	this.domElement = domElement
+	this.domElement = domElement;
 }
