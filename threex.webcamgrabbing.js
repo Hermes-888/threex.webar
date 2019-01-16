@@ -1,14 +1,14 @@
 var THREEx = THREEx || {}
 
 // shim
-navigator.getUserMedia = navigator.getUserMedia || navigator.webkitGetUserMedia || navigator.mozGetUserMedia || navigator.msGetUserMedia;
+navigator.mediaDevices.getUserMedia = navigator.mediaDevices.getUserMedia || navigator.mediaDevices.webkitGetUserMedia || navigator.mediaDevices.mozGetUserMedia || navigator.mediaDevices.msGetUserMedia;
 window.URL = window.URL || window.webkitURL;
 
 /**
  * Grab camera
  * @constructor
  */
-THREEx.WebcamGrabbing = function(){
+THREEx.WebcamGrabbing = function() {
 
 	//////////////////////////////////////////////////////////////////////////////////
 	//		Comments
@@ -99,7 +99,7 @@ THREEx.WebcamGrabbing = function(){
                 }
 
                 // try to get user media
-                navigator.getUserMedia( constraints, function(stream){
+                navigator.mediaDevices.getUserMedia( constraints, function(stream){
                         domElement.src = URL.createObjectURL(stream);
                 }, function(error) {
                         console.error("Cant getUserMedia()! due to ", error);
